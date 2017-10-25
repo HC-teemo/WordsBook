@@ -49,24 +49,30 @@ public class SearchFragment extends Fragment {
         inputWords=inputWords.replace(" ", "");
         if(inputWords!=null&&!inputWords.equals("")){
             ((MainActivity)SearchFragment.this.getActivity()).fragmentChange();
-            HttpUtil.sentHttpRequest(wordsAction.getAddressForWords(inputWords), new HttpCallBackListener() {
-                @Override
-                public void onFinish(InputStream response) {
-                    Log.i("请求状态","完成");
-                    try {
-                        Words words= WordsHandler.getWords(ParseJSON.parse(response));
-                        ((MainActivity)SearchFragment.this.getActivity()).searchHandel(words);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            Words wordsInSql=wordsAction.getWordsFromSQLite(inputWords);
+            if(wordsInSql.getWord()!=null){
+                ((MainActivity)SearchFragment.this.getActivity()).searchHandel(wordsInSql,true);
+            }
+            else {
+                HttpUtil.sentHttpRequest(wordsAction.getAddressForWords(inputWords), new HttpCallBackListener() {
+                    @Override
+                    public void onFinish(InputStream response) {
+                        Log.i("请求状态","完成");
+                        try {
+                            Words words= WordsHandler.getWords(ParseJSON.parse(response));
+                            ((MainActivity)SearchFragment.this.getActivity()).searchHandel(words,false);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                @Override
-                public void onError() {
-                    Log.i("请求状态","错误");
-                }
-            });
+                    @Override
+                    public void onError() {
+                        Log.i("请求状态","错误");
+                    }
+                });
+            }
         }
     }
 }

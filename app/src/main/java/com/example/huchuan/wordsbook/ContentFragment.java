@@ -3,9 +3,15 @@ package com.example.huchuan.wordsbook;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.example.huchuan.wordsbook.util.WordsAction;
+
+import java.util.Set;
 
 
 /**
@@ -13,16 +19,24 @@ import android.view.ViewGroup;
  */
 public class ContentFragment extends Fragment {
 
-
-    public ContentFragment() {
-        // Required empty public constructor
-    }
-
+    private LinearLayout wordsBook;
+    private WordsAction wordsAction;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content, container, false);
+        //初始化控件
+        wordsAction=WordsAction.getInstance(this.getActivity());
+        wordsBook=(LinearLayout) view.findViewById(R.id.myWordsBook);
+        wordsBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click", "onClick: wordsBook");
+                Set<String> wordslist=wordsAction.getWordsList(getActivity());
+                Log.i("value", "wordslist: "+wordslist);
+            }
+        });
         return view;
     }
 

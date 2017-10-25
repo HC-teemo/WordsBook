@@ -32,12 +32,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnSearch;
     private EditText input;
     private FragmentManager fragmentManager;
+    private int FragmentStatus;
+    private static final int INIT = 111;
+    private static final int SEARCH = 122;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         //初始化控件
+        FragmentStatus=this.INIT;
         btnSearch=(ImageButton)this.findViewById(R.id.search);
         input=(EditText)this.findViewById(R.id.input);
         fragmentManager=getFragmentManager();
@@ -46,19 +50,24 @@ public class MainActivity extends AppCompatActivity {
         searchFragment=(SearchFragment) fragmentManager.findFragmentById(R.id.id_fragment_search);
         contentFragment=(ContentFragment) fragmentManager.findFragmentById(R.id.id_fragment_content);
         resultFragmentl=new ResultFragment();
-
     }
 
 
     //布局切换
     public void fragmentChange(){
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.hide(logoFragment);
-        transaction.replace(R.id.id_fragment_content,resultFragmentl);
-        transaction.commit();
+        if(logoFragment.isHidden()){
+
+        }else {
+            FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.hide(logoFragment);
+            transaction.replace(R.id.id_fragment_content,resultFragmentl);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
     }
     //搜索结果
-    public void searchHandel(Words words){
-        resultFragmentl.setContent(words);
+    public void searchHandel(Words words,Boolean in){
+        resultFragmentl.setContent(words,in);
     }
 }

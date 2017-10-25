@@ -13,4 +13,5 @@
     <color name="mainColor2">#f45c43</color>
     <color name="mainColor3">#f36657</color>
     <color name="mainColor4">#fb9965</color>
+    <color name="success">#A1CC72</color>
 </resources>

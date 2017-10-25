@@ -2,6 +2,8 @@ package com.example.huchuan.wordsbook.util;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -9,6 +11,9 @@ import android.util.Log;
 
 import com.example.huchuan.wordsbook.db.WordsSQLiteOpenHelper;
 import com.example.huchuan.wordsbook.model.Words;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by huchuan on 2017/10/18.
@@ -19,6 +24,11 @@ public class WordsAction {
      * 本类的实例
      */
     private static WordsAction wordsAction;
+    /**
+     * 单词本列表名
+     * */
+    private final String SP_WORDS="data";
+    private final String SP_KEY="Words";
     /**
      * Words的表名
      */
@@ -53,6 +63,39 @@ public class WordsAction {
         }
         return wordsAction;
     }
+
+
+    /**
+     * 向单词本列表添加单词
+     * @param words 单词名
+     * @param context 上下文
+     * */
+    public boolean addWordsToBook(String words,Context context){
+        //判断是否是有效对象，即有数据
+        if (words!=null) {
+            SharedPreferences sharedPreferences=context.getSharedPreferences(SP_WORDS,Context.MODE_PRIVATE);
+            Editor editor=sharedPreferences.edit();
+            Set set = sharedPreferences.getStringSet(SP_KEY,new HashSet<String>());
+            set.add(words);
+            editor.putStringSet(SP_KEY, set);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取单词本列表
+     * @param context 上下文
+     * */
+    public Set<String> getWordsList(Context context){
+        SharedPreferences sharedPreferences=context.getSharedPreferences(SP_WORDS,Context.MODE_PRIVATE);
+        Set set = sharedPreferences.getStringSet(SP_KEY,new HashSet<String>());
+        return set;
+    }
+
+
+
 
     /**
      * 向数据库中保存新的Words对象
