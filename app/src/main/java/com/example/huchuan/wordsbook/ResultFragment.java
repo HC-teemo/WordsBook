@@ -51,6 +51,14 @@ public class ResultFragment extends Fragment {
         Log.i("activity", "activity: "+this.myActivity);
     }
 
+    public Activity getMyActivity(){
+        if(getActivity()==null){
+            return this.myActivity;
+        }else {
+            return getActivity();
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,6 +135,10 @@ public class ResultFragment extends Fragment {
                         sams.setText(samsStr);
                         if(InSQL){
                             changeAddBtnStyle();
+                        }else{
+                            addToBook.setBackgroundColor(getResources().getColor(R.color.mainColor1));
+                            addToBook.setText("+   Add");
+                            addToBook.setClickable(true);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -142,7 +154,8 @@ public class ResultFragment extends Fragment {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    getActivity().runOnUiThread(runnable);
+                    Log.i("activity", "run: "+getMyActivity());
+                    getMyActivity().runOnUiThread(runnable);
                 }
             };
             thread.start();

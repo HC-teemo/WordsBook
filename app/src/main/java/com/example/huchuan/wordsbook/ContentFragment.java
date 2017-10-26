@@ -32,9 +32,7 @@ public class ContentFragment extends Fragment {
         wordsBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("click", "onClick: wordsBook");
-                Set<String> wordslist=wordsAction.getWordsList(getActivity());
-                Log.i("value", "wordslist: "+wordslist);
+                ((MainActivity)getActivity()).fragmentChange2();
             }
         });
         return view;
