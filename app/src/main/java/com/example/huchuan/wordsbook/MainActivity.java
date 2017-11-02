@@ -19,6 +19,7 @@ import com.example.huchuan.wordsbook.model.Words;
 import com.example.huchuan.wordsbook.util.HttpCallBackListener;
 import com.example.huchuan.wordsbook.util.HttpUtil;
 import com.example.huchuan.wordsbook.util.ParseJSON;
+import com.example.huchuan.wordsbook.util.WordsAction;
 import com.example.huchuan.wordsbook.util.WordsHandler;
 
 import org.json.JSONException;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ContentFragment contentFragment;
     private ResultFragment resultFragmentl;
     private listFragment listFragment;
+    private NewsFragment newsfragment;
     //layouts
     private LinearLayout foreground;
     private LinearLayout background;
@@ -141,6 +143,62 @@ public class MainActivity extends AppCompatActivity {
         FragmentStatus=this.LIST;
 
     }
+
+    //
+    public void fragmentChange4(){
+        if(logoFragment.isHidden()){
+
+        }else {
+            if(newsfragment==null){
+                newsfragment=new NewsFragment();
+            }
+            FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.hide(logoFragment);
+            transaction.hide(searchFragment);
+            transaction.replace(R.id.id_foreground,newsfragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+    //
+    public void fragmentChange5(){
+        resultFragmentl=new ResultFragment();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.replace(R.id.id_foreground,resultFragmentl);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        FragmentStatus=this.SEARCH;
+    }
+
+    //搜索
+    public void search(String inputWords){
+        WordsAction wordsAction= WordsAction.getInstance(this);
+        Words wordsInSql=wordsAction.getWordsFromSQLite(inputWords);
+        if(wordsInSql.getWord()!=null){
+            searchHandel(wordsInSql,true);
+        }
+        else {
+            HttpUtil.sentHttpRequest(wordsAction.getAddressForWords(inputWords), new HttpCallBackListener() {
+                @Override
+                public void onFinish(InputStream response) {
+                    Log.i("请求状态","完成");
+                    try {
+                        Words words= WordsHandler.getWords(ParseJSON.parse(response));
+                        searchHandel(words,false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onError() {
+                    Log.i("请求状态","错误");
+                }
+            });
+        }
+    }
+
     //搜索结果
     public void searchHandel(Words words,Boolean in){
         resultFragmentl.setContent(words,in);

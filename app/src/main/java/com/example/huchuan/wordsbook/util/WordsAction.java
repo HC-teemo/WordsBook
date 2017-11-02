@@ -155,6 +155,14 @@ public class WordsAction {
         return words;
     }
 
+
+    /**
+     * 从数据库中查找所有words
+     */
+    public Cursor getAllWordsFromSQLite() {
+        return db.rawQuery("SELECT id AS _id ,word,defs FROM Words", null);
+    }
+
     /**
      * 获取网络查找单词的对应地址
      *

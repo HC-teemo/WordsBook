@@ -35,44 +35,20 @@ public class SearchFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                search();
+                String inputWords=input.getText().toString();
+                inputWords=inputWords.replace(" ", "");
+                if(inputWords!=null&&!inputWords.equals("")){
+                    ((MainActivity)SearchFragment.this.getActivity()).fragmentChange();
+                    ((MainActivity)SearchFragment.this.getActivity()).search(inputWords);
+                }
+
             }
         });
-        wordsAction=WordsAction.getInstance(this.getActivity());
+
         return view;
     }
 
 
 
-    public void search(){
-        String inputWords=input.getText().toString();
-        inputWords=inputWords.replace(" ", "");
-        if(inputWords!=null&&!inputWords.equals("")){
-            ((MainActivity)SearchFragment.this.getActivity()).fragmentChange();
-            Words wordsInSql=wordsAction.getWordsFromSQLite(inputWords);
-            if(wordsInSql.getWord()!=null){
-                ((MainActivity)SearchFragment.this.getActivity()).searchHandel(wordsInSql,true);
-            }
-            else {
-                HttpUtil.sentHttpRequest(wordsAction.getAddressForWords(inputWords), new HttpCallBackListener() {
-                    @Override
-                    public void onFinish(InputStream response) {
-                        Log.i("请求状态","完成");
-                        try {
-                            Words words= WordsHandler.getWords(ParseJSON.parse(response));
-                            ((MainActivity)SearchFragment.this.getActivity()).searchHandel(words,false);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    @Override
-                    public void onError() {
-                        Log.i("请求状态","错误");
-                    }
-                });
-            }
-        }
-    }
+
 }

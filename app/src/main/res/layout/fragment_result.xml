@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
 
-                    android:text="hello"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="50dp" />
 
@@ -71,7 +71,7 @@
                         android:id="@+id/BrE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="英:[heˈləʊ]"
+                        android:text=""
                         android:textColor="@color/gray2"
                         android:textSize="20dp" />
 
@@ -89,7 +89,7 @@
                         android:id="@+id/AmE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="美:[heˈləʊ]"
+                        android:text=""
                         android:textColor="@color/gray2"
                         android:textSize="20dp" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:lineSpacingExtra="10dp"
-                    android:text="int.你好；喂；您好；哈喽\nweb.哈罗；哈啰；大家好"
+                    android:text=""
                     android:textColor="@color/gray"
                     android:textSize="20dp" />
 
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineSpacingExtra="3dp"
-                    android:text="The thing that annoys me about him is the way he never says Hello!\n他使我讨厌的是，从来不跟别人打呼。"
+                    android:text=""
                     android:textColor="@color/gray"
                     android:textSize="15dp" />
 
